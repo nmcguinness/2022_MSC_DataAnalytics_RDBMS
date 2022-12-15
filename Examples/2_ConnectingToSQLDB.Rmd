@@ -1,0 +1,45 @@
+---
+title: "RDBMS - Connecting to a MySQL DB"
+author: "Niall McGuinness"
+date: "December, 2022"
+output: 
+  html_document:
+    code_folding: hide
+---
+
+## Clear console on each execute and set chunk default to not show code
+
+```{r setup, include=FALSE}
+cat('\014')
+#knitr::opts_chunk$set(include = FALSE)
+```
+
+## Download and load libraries
+
+```{r include=FALSE}
+ if(!require("RMySQL"))
+   install.packages("RMySQL")
+ if(!require("dplyr"))
+   install.packages("dplyr")
+library(RMySQL)
+library(dplyr)
+```
+
+## Establish a connection to the MySQL DB
+
+## Test the remote connection
+
+## Use an SQL chunk to query and store the results
+
+## Accessing the results in an R chunk
+
+## Use an SQL chunk to execute a query with no result
+
+## Another way to execute a query in an R chunk
+
+## Do NOT forget to disconnect - otherwise we may hit a remote connection limit
+
+
+
+
+
