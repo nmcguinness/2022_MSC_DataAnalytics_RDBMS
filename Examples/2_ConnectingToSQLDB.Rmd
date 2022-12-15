@@ -27,19 +27,77 @@ library(dplyr)
 
 ## Establish a connection to the MySQL DB
 
+```{r include=FALSE}
+conn = dbConnect(RMySQL::MySQL(),
+                            dbname='sql8583447',
+                            host='sql8.freesqldatabase.com',
+                            port=3306,
+                            user='sql8583447',
+                            password = rstudioapi::askForPassword("Enter database password"))
+```
+
 ## Test the remote connection
 
+```{r}
+dbListTables(conn)
+dbListFields(conn, "Customers")
+```
+
+## Use an R chunk to query and store the results
+
+```{r echo=TRUE}
+result <-  dbGetQuery(conn, "SELECT * FROM Customers")
+#result
+```
 ## Use an SQL chunk to query and store the results
+
+```{sql connection=conn, output.var="customer_data"}
+SELECT * FROM Customers
+```
 
 ## Accessing the results in an R chunk
 
+```{r}
+customer_data
+```
+
+```{sql connection=conn}
+# INSERT INTO Customers VALUES(3, "mary", "rose", "m@dkit.ie", "1980-07-12")
+```
+
+```{sql connection=conn, output.var="customer_data"}
+SELECT * FROM Customers
+```
+
+```{r}
+customer_data
+```
+
 ## Use an SQL chunk to execute a query with no result
+
+```{sql eval=FALSE, connection=conn, include=FALSE}
+#DELETE FROM Customers WHERE fname LIKE "%ar%"
+```
 
 ## Another way to execute a query in an R chunk
 
+```{r}
+target_id <- 2
+```
+
+```{sql connection=conn, output.var="result_data"}
+SELECT * FROM Customers WHERE id = ?target_id 
+```
+
+```{r}
+result_data
+```
+
 ## Do NOT forget to disconnect - otherwise we may hit a remote connection limit
 
-
+```{r}
+dbDisconnect(conn)
+```
 
 
 

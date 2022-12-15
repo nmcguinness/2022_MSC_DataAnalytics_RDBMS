@@ -17,21 +17,65 @@ if(!require("DBI"))
   install.packages("DBI")
 if(!require("dplyr"))
   install.packages("dplyr")
-if(!require("readr"))
-  install.packages("readr")
+# if(!require("readr"))
+#   install.packages("readr")
 
-library(readr)
 library(DBI)
+#library(readr)
 library(dplyr)
 
 # Connect (and create) a new local SQLite DB
 
+conn <- dbConnect(RSQLite::SQLite(), "mtcars_db.sqlite")
+
 # Add table data to the SQLite DB
+
+dbWriteTable(conn, "mtcars", mtcars, overwrite = T, append = F)
 
 # Test the DB
 
+# View(mtcars)
+
+dbListTables(conn)
+dbListFields(conn, "mtcars")
+
 # Query and store the results
+
+# CRUD - Create, Rename, Update, Delete
+
+# result <-  dbGetQuery(conn, "SELECT * FROM mtcars")
+# result
+
+# result <-  dbGetQuery(conn, "SELECT wt, disp, mpg FROM mtcars")
+# result
+
+# result <-  dbGetQuery(conn, "SELECT * FROM mtcars WHERE mpg >= 18 AND mpg <= 22")
+# result
+
+# result <-  dbGetQuery(conn, "SELECT * FROM mtcars WHERE mpg >= 18 AND mpg <= 22 ORDER BY hp ASC LIMIT 4")
+# result
+
+# result <-  dbGetQuery(conn, "SELECT * FROM mtcars WHERE mpg >= 18 AND mpg <= 22 ORDER BY hp ASC LIMIT 4")
+# result
+
+# result <-  dbGetQuery(conn, "SELECT COUNT(mpg) FROM mtcars WHERE mpg > 25")
+# result
+# 
+# result <-  dbGetQuery(conn, "SELECT AVG(hp) FROM mtcars")
+# result
 
 # Execute a query with no result
 
+result <-  dbGetQuery(conn, "SELECT * FROM mtcars")
+result
+
+dbExecute(conn, "DELETE FROM mtcars WHERE mpg <= 20")
+
+result <-  dbGetQuery(conn, "SELECT * FROM mtcars")
+result
+
 # Do NOT forget to disconnect - otherwise we may hit a remote connection limit
+
+dbDisconnect(conn)
+
+
